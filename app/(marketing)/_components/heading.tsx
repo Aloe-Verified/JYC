@@ -3,7 +3,7 @@
 export const Heading = () => {
     return (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
-        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 mb-2">
+        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 mb-2bg-white dark:text-amber-50">
           Your note-taker, your advisor, your friend,{" "}
           <span className="text-5xl font-black text-blue-600">JYC</span>
         </h1>

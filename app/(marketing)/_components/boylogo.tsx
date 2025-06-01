@@ -28,26 +28,36 @@ export default function BoyLogo() {
     >
       {/* Default frantic note-taking boy */}
       {!isHovering && (
-        <Image 
-          src="/JYC_icon.png"
-          alt="Boy taking frantic notes"
-          className = "rounded-full shadow-md"
-          layout="fill"
-          objectFit="contain"
-        />
+        <motion.div
+          key="default"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5 }}
+          className="absolute inset-0">
+          <Image 
+            src="/JYC_icon.png"
+            alt="Boy taking frantic notes"
+            className = "rounded-full shadow-md"
+            layout="fill"
+            objectFit="contain"
+          />
+      </motion.div>
       )}
 
       {/* Waving boy animation on hover */}
       {isHovering && (
         <motion.div
-          initial={{ rotate: 0 }}
-          animate={{ rotate: [0, 20, -20, 20, 0] }}
-          transition={{ duration: 1, repeat: Infinity, repeatDelay: 0.5 }}
-          className="w-full h-full"
+          key="wave"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5 }}
+          className="absolute inset-0"
         >
           <Image 
             src="/JYC_icon_frame2.png" // <-- You'll need to create a second image of the boy gathering his notes and waving
-            alt="Boy waving"
+            alt="BoyLogo animation"
             className = "rounded-full shadow-md"
             layout="fill"
             objectFit="contain"

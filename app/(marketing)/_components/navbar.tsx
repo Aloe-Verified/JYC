@@ -1,20 +1,17 @@
 "use client";
-import {useState, useEffect} from "react";
+
 import { useScrollTop } from "@/hooks/use-scroll-top";
-import { ModeToggle } from "@/components/mode-toggle";
+import { cn } from "@/lib/utils";
+import { ModeToggle } from "./dark_mode_toggle";
 
 export const NavBar = () =>{
     const hasScrolled = useScrollTop();
     return (
-        <div className={`fixed top-0 left-0 w-full bg-white transition-transform duration-300 ${hasScrolled ? "translate-y-0" : "-translate-y-full"}`}>
-            <nav className="flex items-center justify-between p-4">
-                <div className="text-lg font-bold">Logo</div>
-                <ul className="flex space-x-4">
-                    <li>Home</li>
-                    <li>About</li>
-                    <li>Contact</li>
-                </ul>
-            </nav>
+        <div className={cn("bg-background fixed top-0 flex items-center w-full p-2", hasScrolled && "border-b shadow-sm")}>
+            <div className = "flex-shrink-0 no-wrap font-bold text-lg"> Logo goes here </div>
+            <div className="ml-auto justify-end justify-between w-full flex items-center gap-x-2 mr-4">
+                <ModeToggle />
+            </div>
         </div>
     )
 };
