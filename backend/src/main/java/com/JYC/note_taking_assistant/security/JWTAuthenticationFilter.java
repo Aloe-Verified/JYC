@@ -1,6 +1,6 @@
 package com.JYC.note_taking_assistant.security;
 
-import com.JYC.note_taking_assistant.models.CustomUserDetails;
+import com.JYC.note_taking_assistant.services.CustomUserDetailsService;
 import com.JYC.note_taking_assistant.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -9,21 +9,24 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Optional;
 
+@Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private JwtService tokenGenerator;
-    private CustomUserDetails userDetails;
+    private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    public JWTAuthenticationFilter(JwtService tokenGenerator, CustomUserDetails userDetails){
+    public JWTAuthenticationFilter(JwtService tokenGenerator, CustomUserDetailsService userDetailsService){
         this.tokenGenerator = tokenGenerator;
-        this.userDetails = userDetails;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -31,6 +34,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         Optional<String> tokenOpt = getJWTFromRequest(request);
         if (tokenOpt.isPresent()) {
             String token = tokenOpt.get();
+            String username = tokenGenerator.extractUserName(token);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (StringUtils.hasText(token) && tokenGenerator.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
