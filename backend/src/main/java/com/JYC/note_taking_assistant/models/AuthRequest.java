@@ -7,11 +7,11 @@ public class AuthRequest {
     public AuthRequest (){
 
     }
-    public Object getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    public Object getPassword() {
+    public String getPassword() {
         return password;
     }
 }
