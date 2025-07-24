@@ -5,7 +5,7 @@ const RootLayout = ({
     children: React.ReactNode;
 }) => {
     return (
-        <div className = "h-full bg-red-500 text-white">
+        <div className = "h-full bg-[#FFFDD0] text-white">
             {children}
         </div>
     );
