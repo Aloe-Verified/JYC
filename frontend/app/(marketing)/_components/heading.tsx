@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export const Heading = () => {
     return (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
@@ -7,9 +9,11 @@ export const Heading = () => {
           Your note-taker, your advisor, your friend,{" "}
           <span className="text-5xl font-black text-blue-600">JYC</span>
         </h1>
-        <button className=" mt-6 bg-blue-600 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition duration-300">
-          Enter
-        </button>
+        <Link href="/app/documents">
+          <button className=" mt-6 bg-blue-600 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition duration-300">
+            Enter App
+          </button>
+        </Link>
     </div>
     )
 }

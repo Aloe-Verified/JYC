@@ -1,6 +1,8 @@
 package com.JYC.note_taking_assistant.entities;
 
 import jakarta.persistence.*;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
 import java.time.Instant;
 
@@ -9,16 +11,17 @@ import java.time.Instant;
 public class Page {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     @ManyToOne
     private User user;
 
-    @Column(nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @JoinColumn
+    @JoinColumn(name = "parent_id")
     @ManyToOne
     private Page parent;
 
@@ -26,12 +29,12 @@ public class Page {
 //    @OrderBy("position")
 //    LinkedList<Page> children;
 
-    @Column(nullable = false)
+    @Column(name = "position", nullable = false)
     private Integer position = 0;
 
-    @Column
+    @Column(name = "created_at")
     Instant createdAt;
-    @Column
+    @Column(name = "updated_at")
     Instant updatedAt;
 
     public User getUser() {
@@ -88,5 +91,16 @@ public class Page {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
     }
 }
