@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { Mail, Lock, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../../../hooks/useAuth';
+import { getApiUrl } from '@/lib/api';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -19,7 +20,7 @@ export default function LoginPage() {
         setError('');
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+            const res = await fetch(getApiUrl('/api/auth/login'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: email, password: password }),
@@ -44,7 +45,7 @@ export default function LoginPage() {
                     console.log('Login successful, token stored');
                     
                     // Redirect to main app
-                    router.push('/documents');
+                    router.push('/app/documents');
                 } else {
                     throw new Error('Failed to store authentication data');
                 }

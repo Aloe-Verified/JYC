@@ -24,9 +24,9 @@ export function useAuth() {
       const token = localStorage.getItem('authToken');
       const storedUserInfo = localStorage.getItem('userInfo');
       
-      if (token && storedUserInfo) {
+      if (token) {
         setIsAuthenticated(true);
-        setUserInfo(JSON.parse(storedUserInfo));
+        setUserInfo(storedUserInfo ? JSON.parse(storedUserInfo) : null);
       } else {
         setIsAuthenticated(false);
         setUserInfo(null);

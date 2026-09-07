@@ -33,6 +33,10 @@ Create a `.env.local` file in the frontend directory:
 NEXT_PUBLIC_API_URL=http://localhost:8080
 ```
 
+This value is the backend origin. A trailing `/api` is also supported for existing
+configurations. If unset, it defaults to `http://localhost:8080`. Restart the
+frontend after changing `.env.local`.
+
 3. Start the development server:
 ```bash
 npm run dev

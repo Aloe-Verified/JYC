@@ -1,6 +1,6 @@
 "use client";
 
-import { env } from "process";
+import { getApiUrl } from '@/lib/api';
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { Mail, Lock } from 'lucide-react';
@@ -9,9 +9,9 @@ export default function RegisterPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    async function handleSubmit(event) {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
+        const res = await fetch(getApiUrl('/api/auth/register'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: email, password: password }),

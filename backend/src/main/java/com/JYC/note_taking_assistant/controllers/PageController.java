@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 @RestController
 @RequestMapping("/api/pages")
 public class PageController {
@@ -22,5 +23,9 @@ public class PageController {
     @GetMapping("/{id}")
     public Page getPageById(@PathVariable Long id){
         return pageService.getPageById(id);
+    }
+    @GetMapping
+    public List<Page> getAllPages(@AuthenticationPrincipal UserDetails userDetails) {
+        return pageService.getAllPages(userDetails.getUsername());
     }
 }

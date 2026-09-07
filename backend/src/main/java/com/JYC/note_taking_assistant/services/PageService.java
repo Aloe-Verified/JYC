@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class PageService {
@@ -36,5 +37,8 @@ public class PageService {
     }
     public Page getPageById(Long id){
         return pages.findById(id).orElseThrow(() -> new EntityNotFoundException("Page not found"));
+    }
+    public List<Page> getAllPages(String username) {
+        return pages.findByUserUsernameOrderByPositionAscIdAsc(username);
     }
 }

@@ -2,7 +2,14 @@
  * Utility functions for making authenticated API calls
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+// Accept either a backend origin or the legacy origin ending in /api.
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080')
+  .replace(/\/+$/, '')
+  .replace(/\/api$/, '');
+
+export function getApiUrl(endpoint: string): string {
+  return `${API_BASE_URL}/${endpoint.replace(/^\/+/, '')}`;
+}
 
 export interface ApiResponse<T = any> {
   data?: T;
@@ -38,7 +45,7 @@ export async function authenticatedFetch<T = any>(
     throw new Error('No authentication token found');
   }
 
-  const url = `${API_BASE_URL}${endpoint}`;
+  const url = getApiUrl(endpoint);
   
   const defaultHeaders: HeadersInit = {
     'Content-Type': 'application/json',
@@ -90,7 +97,7 @@ export async function publicFetch<T = any>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
-  const url = `${API_BASE_URL}${endpoint}`;
+  const url = getApiUrl(endpoint);
   
   const defaultHeaders: HeadersInit = {
     'Content-Type': 'application/json',
