@@ -24,6 +24,10 @@ Screenshots of the local development version, captured September 10, 2026.
 
 ![JYC homepage with mascot, account navigation, and Enter App button](docs/images/homepage.jpg)
 
+### Documents dashboard
+
+![JYC documents dashboard after signing into a new demo account](docs/images/dashboard.jpg)
+
 ### Login
 
 ![Updated JYC login screen](docs/images/login.jpg)
