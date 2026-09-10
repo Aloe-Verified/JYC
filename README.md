@@ -18,6 +18,18 @@ Built with **Next.js, React, TypeScript, and Tailwind CSS**, backed by **Java 21
 
 ## Preview
 
-<img width="2940" height="1493" alt="JYC project screenshot 1" src="https://github.com/user-attachments/assets/9e76f4cb-25f5-4daf-92db-0ab948d413e2" />
-<img width="2942" height="1569" alt="image" src="https://github.com/user-attachments/assets/aabef569-3fc1-4a6d-9e34-25fd8138e469" />
+Screenshots of the local development version, captured September 10, 2026.
+
+### Homepage
+
+![JYC homepage with mascot, account navigation, and Enter App button](docs/images/homepage.jpg)
+
+### Login
+
+![Updated JYC login screen](docs/images/login.jpg)
+
+### Registration
+
+![Updated JYC registration screen](docs/images/register.jpg)
+
 
