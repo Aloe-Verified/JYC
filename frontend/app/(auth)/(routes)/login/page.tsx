@@ -1,10 +1,12 @@
 "use client";
 
+import { BrandMark } from "@/components/brand-mark";
+
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { Mail, Lock, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../../../hooks/useAuth';
-import { getApiUrl } from '@/lib/api';
+import { publicFetch } from '@/lib/api';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -20,21 +22,21 @@ export default function LoginPage() {
         setError('');
 
         try {
-            const res = await fetch(getApiUrl('/api/auth/login'), {
+            const res = await publicFetch('/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: email, password: password }),
             });
 
-            const data = await res.json();
+            const data = res.data;
 
-            if (!res.ok) {
+            if (!res.success) {
                 // Handle error response
-                throw new Error(data.message || 'Login failed');
+                throw new Error(res.error || 'Login failed');
             }
 
             // Check if we have a token in the response
-            if (data.token || data.accessToken || data.bearerToken) {
+            if (data?.token || data?.accessToken || data?.bearerToken) {
                 // Get the token from the response
                 const token = data.token || data.accessToken || data.bearerToken;
                 
@@ -62,31 +64,27 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center relative">
+        <div className="min-h-screen flex items-center justify-center relative px-4 py-24">
             {/* Top-left logo */}
-            <div className="absolute top-6 left-6 text-white text-lg font-bold">
-                Logo
+            <div className="absolute top-6 left-6 text-[#493322] text-lg font-bold">
+                JYC
             </div>
 
-            {/* Glassmorphic card */}
-            <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 w-full max-w-md shadow-xl">
-                {/* Mascot */}
+            {/* Parchment card */}
+            <div className="bg-[#FFF9ED] border border-[#D8C3A5] rounded-2xl p-8 w-full max-w-md shadow-[0_20px_60px_-20px_rgba(91,61,37,0.35)]">
+                {/* Brand mark */}
                 <div className="flex justify-center">
-                    <img
-                        src="/JYC_icon_frame2.png"
-                        alt="JYC Mascot"
-                        className="w-24 h-24 rounded-full object-cover ring-2 ring-white/25"
-                    />
+                    <BrandMark />
                 </div>
 
                 {/* Heading */}
-                <h2 className="mt-6 text-center text-2xl font-bold text-black">
+                <h2 className="mt-6 text-center text-2xl font-bold text-[#493322]">
                     Welcome back, friend!
                 </h2>
 
                 {/* Error Message */}
                 {error && (
-                    <div className="mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg flex items-center gap-2 text-red-400">
+                    <div className="mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg flex items-center gap-2 text-red-700">
                         <AlertCircle className="h-4 w-4" />
                         <span className="text-sm">{error}</span>
                     </div>
@@ -96,7 +94,7 @@ export default function LoginPage() {
                 <form onSubmit={handleSubmit} className="mt-8 space-y-5">
                     {/* Email */}
                     <label className="relative block">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#806B55]" size={20} />
                         <input
                             type="email"
                             required
@@ -104,14 +102,14 @@ export default function LoginPage() {
                             onChange={e => setEmail(e.target.value)}
                             placeholder="Email"
                             disabled={isLoading}
-                            className="w-full pl-10 pr-4 py-2 rounded-lg bg-white/10 text-white placeholder-gray-400
-                         focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-[#3A64F1] disabled:opacity-50"
+                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-[#D8C3A5] bg-[#F7EEDD] text-[#493322] placeholder-[#806B55]
+                         focus:bg-[#FFFCF5] focus:outline-none focus:ring-2 focus:ring-[#795334] disabled:opacity-50"
                         />
                     </label>
 
                     {/* Password */}
                     <label className="relative block">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-[#806B55]" size={20} />
                         <input
                             type="password"
                             required
@@ -119,8 +117,8 @@ export default function LoginPage() {
                             onChange={e => setPassword(e.target.value)}
                             placeholder="Password"
                             disabled={isLoading}
-                            className="w-full pl-10 pr-4 py-2 rounded-lg bg-white/10 text-white placeholder-gray-400
-                         focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-[#3A64F1] disabled:opacity-50"
+                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-[#D8C3A5] bg-[#F7EEDD] text-[#493322] placeholder-[#806B55]
+                         focus:bg-[#FFFCF5] focus:outline-none focus:ring-2 focus:ring-[#795334] disabled:opacity-50"
                         />
                     </label>
 
@@ -128,17 +126,17 @@ export default function LoginPage() {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full py-3 mt-2 bg-[#3A64F1] text-white font-semibold rounded-lg
-                       hover:bg-[#3450c1] transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full py-3 mt-2 bg-[#795334] text-[#FFF9ED] font-semibold rounded-lg
+                       hover:bg-[#5C3D26] transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isLoading ? 'Logging in...' : 'Login'}
                     </button>
                 </form>
 
                 {/* Register link */}
-                <p className="mt-6 text-center text-sm text-gray-300">
+                <p className="mt-6 text-center text-sm text-[#705B46]">
                     Don't have an account?{' '}
-                    <a href="/register" className="text-[#3A64F1] hover:underline">
+                    <a href="/register" className="text-[#795334] font-semibold hover:underline">
                         Register
                     </a>
                 </p>

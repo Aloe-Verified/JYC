@@ -22,7 +22,7 @@ Screenshots of the local development version, captured September 10, 2026.
 
 ### Homepage
 
-![JYC homepage with mascot, account navigation, and Enter App button](docs/images/homepage.jpg)
+![JYC homepage with public-domain book logo, account navigation, and Enter App button](docs/images/homepage.jpg)
 
 ### Documents dashboard
 
@@ -35,5 +35,4 @@ Screenshots of the local development version, captured September 10, 2026.
 ### Registration
 
 ![Updated JYC registration screen](docs/images/register.jpg)
-
 

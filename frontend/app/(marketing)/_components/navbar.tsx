@@ -3,15 +3,23 @@
 import { useScrollTop } from "@/hooks/use-scroll-top";
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "./dark_mode_toggle";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export const NavBar = () =>{
     const hasScrolled = useScrollTop();
     return (
-        <div className={cn("bg-background fixed top-0 flex items-center w-full p-2", hasScrolled && "border-b shadow-sm")}>
-            <div className = "flex-shrink-0 no-wrap font-bold text-lg"> Logo goes here </div>
-            <div className="ml-auto justify-end justify-between w-full flex items-center gap-x-2 mr-4">
+        <div className={cn("bg-background text-foreground fixed top-0 z-50 flex items-center gap-2 w-full p-2", hasScrolled && "border-b shadow-sm")}>
+            <Link href="/" className="flex-shrink-0 font-bold text-lg">JYC</Link>
+            <nav aria-label="Account navigation" className="ml-auto flex items-center gap-x-2">
+                <Button asChild variant="outline" size="sm">
+                    <Link href="/login">Login</Link>
+                </Button>
+                <Button asChild size="sm">
+                    <Link href="/register">Register</Link>
+                </Button>
                 <ModeToggle />
-            </div>
+            </nav>
         </div>
     )
 };

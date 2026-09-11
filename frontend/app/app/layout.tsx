@@ -1,14 +1,60 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { getAuthToken, getApiUrl, logout } from '@/lib/api';
 import { FileTextIcon, HomeIcon, SearchIcon, StarIcon, SettingsIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
     const pathname = usePathname();
+    const router = useRouter();
+    const [sessionState, setSessionState] = useState<'checking' | 'verified' | 'error'>('checking');
+    const [attempt, setAttempt] = useState(0);
+
+    useEffect(() => {
+        const controller = new AbortController();
+        setSessionState('checking');
+        async function verifySession() {
+            const token = getAuthToken();
+            if (!token) {
+                router.replace('/login');
+                return;
+            }
+            try {
+                const response = await fetch(getApiUrl('/api/session'), {
+                    headers: { Authorization: `Bearer ${token}` },
+                    cache: 'no-store',
+                    signal: controller.signal,
+                });
+                if (controller.signal.aborted) return;
+                if (response.status === 401) {
+                    logout();
+                    router.replace('/login');
+                    return;
+                }
+                if (!response.ok) throw new Error('Session verification failed');
+                setSessionState('verified');
+            } catch {
+                if (!controller.signal.aborted) setSessionState('error');
+            }
+        }
+        void verifySession();
+        return () => controller.abort();
+    }, [router, attempt]);
+
+    if (sessionState === 'error') {
+        return <div className="min-h-screen flex flex-col gap-4 items-center justify-center text-foreground">
+            <p role="alert">Unable to verify your session. Please try again.</p>
+            <Button onClick={() => setAttempt(value => value + 1)}>Retry</Button>
+        </div>;
+    }
+
+    if (sessionState !== 'verified') {
+        return <div role="status" className="min-h-screen flex items-center justify-center text-foreground">Checking your session...</div>;
+    }
 
     const navigation = [
         { name: 'Documents', href: '/app/documents', icon: FileTextIcon },

@@ -11,6 +11,27 @@ export function getApiUrl(endpoint: string): string {
   return `${API_BASE_URL}/${endpoint.replace(/^\/+/, '')}`;
 }
 
+async function readResponse<T>(response: Response): Promise<T | undefined> {
+  const text = await response.text();
+  let data;
+  try {
+    data = text.trim() ? JSON.parse(text) : undefined;
+  } catch {
+    throw new Error(response.ok
+      ? 'The server returned an invalid response.'
+      : `Request failed (HTTP ${response.status}). Please try again.`);
+  }
+  if (!response.ok) {
+    throw new Error(data?.message || `Request failed (HTTP ${response.status}). Please try again.`);
+  }
+  return data;
+}
+
+function redirectToLogin(): void {
+  logout();
+  if (typeof window !== 'undefined') window.location.replace('/login');
+}
+
 export interface ApiResponse<T = any> {
   data?: T;
   message?: string;
@@ -42,7 +63,8 @@ export async function authenticatedFetch<T = any>(
   const token = getAuthToken();
   
   if (!token) {
-    throw new Error('No authentication token found');
+    redirectToLogin();
+    return { success: false, error: 'Please log in to continue.' };
   }
 
   const url = getApiUrl(endpoint);
@@ -62,20 +84,11 @@ export async function authenticatedFetch<T = any>(
 
   try {
     const response = await fetch(url, config);
-    const data = await response.json();
-
-    if (!response.ok) {
-      // Handle authentication errors
-      if (response.status === 401) {
-        // Token might be expired or invalid
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userInfo');
-        // You could redirect to login here if needed
-        throw new Error('Authentication failed. Please login again.');
-      }
-      
-      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    if (response.status === 401) {
+      redirectToLogin();
+      throw new Error('Your session has expired. Please log in again.');
     }
+    const data = await readResponse<T>(response);
 
     return {
       data,
@@ -113,11 +126,7 @@ export async function publicFetch<T = any>(
 
   try {
     const response = await fetch(url, config);
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || `HTTP error! status: ${response.status}`);
-    }
+    const data = await readResponse<T>(response);
 
     return {
       data,

@@ -21,13 +21,13 @@ export const metadata: Metadata = {
     icon: [
       {
         media: "(prefers-color-scheme: light)",
-        url: "/JYC_icon.svg",
-        href: "/JYC_icon.svg",
+        url: "/jyc-book.svg",
+        href: "/jyc-book.svg",
       },
       {
         media: "(prefers-color-scheme: dark)",
-        url: "/JYC_icon.svg",
-        href: "/JYC_icon.svg",
+        url: "/jyc-book.svg",
+        href: "/jyc-book.svg",
       },
     ],
   },
